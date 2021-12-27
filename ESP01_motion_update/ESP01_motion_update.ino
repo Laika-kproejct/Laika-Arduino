@@ -3,7 +3,7 @@
 
 #define IN 1
 #define OUT 2
-#define TOKEN 2001  //첫번째 숫자가 홈아이디(3),모션이 1, 조도가 2
+#define TOKEN 3001  //첫번째 숫자가 홈아이디(3),모션이 1, 조도가 2
 String serverHost = "3.36.174.74";
 
 const int trigPin = 6;
@@ -17,7 +17,6 @@ SoftwareSerial ser(10, 11); // RX/TX 설정, serial 객체생성
 int pre = -1;
 String str = "";
 int isRegister = 0;
-// Take samples and return the average
 
 int judge(int Pin) {
   if (pre == -1) {
@@ -54,14 +53,14 @@ void loop() {
   
   if (isRegister == 0) {
     String cmd = "AT+CIPSTART=\"TCP\",\"";
-    cmd += serverHost; // api.thingspeak.com 접속 IP
-    cmd += "\",8080";           // api.thingspeak.com 접속 포트, 80
+    cmd += serverHost; //접속 IP
+    cmd += "\",8080";  //접속 포트, 80
     ser.println(cmd);
     if (ser.find("Error")) {
     Serial.println("AT+CIPSTART error");
     return;
     }
-    String getStr = "GET /sensor/register?token=";
+    String getStr = "GET /sensor/unregistered/register?token=";
     getStr += TOKEN;
     getStr += "&type=";
     getStr += "IN_OUT";
@@ -107,8 +106,8 @@ void loop() {
     while(isRegister ==1){
         // TCP 연결
         String cmd = "AT+CIPSTART=\"TCP\",\"";
-        cmd += serverHost; // api.thingspeak.com 접속 IP
-        cmd += "\",8080";           // api.thingspeak.com 접속 포트, 80
+        cmd += serverHost; //접속 IP
+        cmd += "\",8080";  //접속 포트, 80
         ser.println(cmd);
 
         if (ser.find("Error")) {
@@ -137,7 +136,7 @@ void loop() {
           // alert user
           Serial.println("AT+CIPCLOSE");
         }
-        // Thingspeak 최소 업로드 간격 15초를 맞추기 위한 delay
+        //최소 업로드 간격 delay
         delay(5000);
         }
       }
@@ -151,8 +150,8 @@ void loop() {
         // TCP 연결
         while(isRegister == 1){
         String cmd = "AT+CIPSTART=\"TCP\",\"";
-        cmd += serverHost; // api.thingspeak.com 접속 IP
-        cmd += "\",8080";           // api.thingspeak.com 접속 포트, 80
+        cmd += serverHost; //접속 IP
+        cmd += "\",8080";  //접속 포트, 80
         ser.println(cmd);
 
         if (ser.find("Error")) {
@@ -183,7 +182,7 @@ void loop() {
           Serial.println("AT+CIPCLOSE");
         }
 
-        // Thingspeak 최소 업로드 간격 15초를 맞추기 위한 delay
+        //최소 업로드 간격 delay
         delay(5000);
         }
       }

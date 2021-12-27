@@ -11,7 +11,6 @@ int val = 0;
 int val2 = 0;
 int num = 0;
 int isRegister = 0;
-// 자신의 thingspeak 채널의 API key 입력
 
 SoftwareSerial ser(10, 11); // RX/TX 설정, serial 객체생성
 
@@ -28,8 +27,8 @@ void loop() {
 
   if (isRegister == 0) {
     String cmd = "AT+CIPSTART=\"TCP\",\"";
-    cmd += serverHost; // api.thingspeak.com 접속 IP
-    cmd += "\",8080";           // api.thingspeak.com 접속 포트, 80
+    cmd += serverHost; //접속 IP
+    cmd += "\",8080";  //접속 포트, 80
     ser.println(cmd);
     if (ser.find("Error")) {
       Serial.println("AT+CIPSTART error");
@@ -61,8 +60,6 @@ void loop() {
     val2 = val;
     val = analogRead(lightPin);
     delay(500);
-    // LM35 값을 섭씨온도로 변환
-    //float temp = val*50.0f/1023.0f;
     num = val - val2;
     if (num < 0) {
       num = (-1) * num;
@@ -76,8 +73,8 @@ void loop() {
 
       // TCP 연결
       String cmd = "AT+CIPSTART=\"TCP\",\"";
-      cmd += serverHost; // api.thingspeak.com 접속 IP
-      cmd += "\",8080";           // api.thingspeak.com 접속 포트, 80
+      cmd += serverHost; //접속 IP
+      cmd += "\",8080";  //접속 포트, 80
       ser.println(cmd);
 
       if (ser.find("Error")) {
@@ -104,7 +101,7 @@ void loop() {
         Serial.println("AT+CIPCLOSE");
       }
 
-      // Thingspeak 최소 업로드 간격 15초를 맞추기 위한 delay
+      //최소 업로드 간격 delay
       delay(1000);
     }
   }
